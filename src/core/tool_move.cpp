@@ -374,7 +374,14 @@ ToolResponse ToolMove::update(const ToolArgs &args)
             return ToolResponse::end();
         }
         else {
-            auto dir = dir_from_arrow_key(args.key) * imp->get_grid_spacing();
+            auto spacing = imp->get_grid_spacing();
+
+            // Fine grid modifier was matched
+            if (args.button == 1) {
+                spacing /= 10;
+            }
+
+            auto dir = dir_from_arrow_key(args.key) * spacing;
             if (dir.x || dir.y) {
                 key_delta += dir;
                 move_do(dir);
